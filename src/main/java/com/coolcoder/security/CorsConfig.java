@@ -15,19 +15,16 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Production frontend URL (Vercel)
+        // 🔥 Your frontends
         config.setAllowedOrigins(Arrays.asList(
-            "https://balc-frontend.vercel.app",
-            "http://localhost:5173",
-            "http://localhost:8080"
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://your-vercel-domain.vercel.app" // <== Replace with your real Vercel URL
         ));
 
-        config.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
-
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(true);   // Allow cookies
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
