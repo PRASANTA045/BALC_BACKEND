@@ -34,13 +34,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> {})
+                .cors(cors -> {})   // Enable CORS
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()     // 🔥 LOGIN / REGISTER
+
+                        // 🔥 Public routes
+                        .requestMatchers("/auth/**").permitAll()  
                         .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+
+                        // 🔥 Admin only
                         .requestMatchers(HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
+
+                        // All others must be logged in
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authProvider())
@@ -54,7 +60,7 @@ public class SecurityConfig {
         return email -> userRepository.findByEmail(email)
                 .map(u -> User.withUsername(u.getEmail())
                         .password(u.getPassword())
-                        .roles(u.getRole().name())
+                        .roles(u.getRole().name())   // ROLE_ADMIN / ROLE_USER
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

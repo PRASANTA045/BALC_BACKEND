@@ -15,16 +15,23 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // 🔥 Your frontends
+        // 🔥 Add ALL allowed frontend origins here
         config.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",
                 "http://localhost:3000",
-                "https://your-vercel-domain.vercel.app" // <== Replace with your real Vercel URL
+
+                // ✅ Your REAL Vercel frontend domain (replace exactly)
+                "https://balc-frontend.vercel.app"
         ));
 
-        config.setAllowCredentials(true);   // Allow cookies
+        // 🔥 Important for JWT cookies
+        config.setAllowCredentials(true);
+
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        
+        // Optional but recommended
+        config.setExposedHeaders(Arrays.asList("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
