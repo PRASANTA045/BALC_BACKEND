@@ -15,13 +15,10 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allowed frontend origins
         config.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",
                 "http://localhost:3000",
-
-                // 👉 Replace this with your actual Vercel frontend URL
-                "https://balc-frontend.vercel.app"
+                "https://balc-frontend.vercel.app"   // ✅ Correct domain
         ));
 
         config.setAllowCredentials(true);
